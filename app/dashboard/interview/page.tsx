@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Feedback = {
   score: number;
@@ -9,58 +9,112 @@ type Feedback = {
   improvements: string[];
 };
 
+type Role =
+  | "frontend"
+  | "backend"
+  | "fullstack"
+  | "mobile"
+  | "devops"
+  | "data"
+  | "ml"
+  | "system"
+  | "sre"
+  | "cloud"
+  | "security";
+
+type Difficulty = "easy" | "medium" | "hard";
+
+const ROLES: { value: Role; label: string }[] = [
+  { value: "frontend", label: "Frontend Engineer" },
+  { value: "backend", label: "Backend Engineer" },
+  { value: "fullstack", label: "Full Stack Engineer" },
+  { value: "mobile", label: "Mobile Engineer (React Native)" },
+  { value: "devops", label: "DevOps Engineer" },
+  { value: "data", label: "Data Engineer" },
+  { value: "ml", label: "Machine Learning Engineer" },
+  { value: "system", label: "System Design" },
+  { value: "sre", label: "Site Reliability Engineer" },
+  { value: "cloud", label: "Cloud Engineer" },
+  { value: "security", label: "Security Engineer" },
+];
+
 export default function InterviewPage() {
-  const [role, setRole] = useState("frontend");
-  const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState<Role>("frontend");
+  const [difficulty, setDifficulty] = useState<Difficulty>("medium");
   const [question, setQuestion] = useState<string | null>(null);
   const [answer, setAnswer] = useState("");
   const [feedback, setFeedback] = useState<Feedback | null>(null);
+  const [loading, setLoading] = useState(false);
   const [evaluating, setEvaluating] = useState(false);
+  const [questionNo, setQuestionNo] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(120); // seconds
 
+  /* ---------------- TIMER ---------------- */
+  useEffect(() => {
+    if (!question) return;
+
+    setTimeLeft(200);
+    const timer = setInterval(() => {
+      setTimeLeft((t) => {
+        if (t <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return t - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [question]);
+
+  /* ---------------- API HELPERS ---------------- */
+  async function postJSON(url: string, body: unknown) {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || "Request failed");
+    return data;
+  }
+
+  /* ---------------- START / NEXT QUESTION ---------------- */
   async function startInterview() {
     setLoading(true);
-    setQuestion(null);
     setAnswer("");
     setFeedback(null);
 
     try {
-      const res = await fetch("/api/interview/question", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ role }),
+      const data = await postJSON("/api/interview/question", {
+        role,
+        difficulty,
       });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
-
       setQuestion(data.question);
-    } catch (err) {
-      console.error(err);
-      alert("Failed to generate question");
+      setQuestionNo((n) => n + 1);
+    } catch {
+      alert("Failed to load question");
     } finally {
       setLoading(false);
     }
   }
 
+  /* ---------------- SUBMIT ANSWER ---------------- */
   async function submitAnswer() {
     if (!question || !answer.trim()) return;
 
     setEvaluating(true);
-    setFeedback(null);
 
     try {
-      const res = await fetch("/api/interview/evaluate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, answer, role }),
+      const data = await postJSON("/api/interview/evaluate", {
+        role,
+        difficulty,
+        question,
+        answer,
       });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error();
-
       setFeedback(data);
-    } catch (err) {
-      console.error(err);
+    } catch {
       alert("Failed to evaluate answer");
     } finally {
       setEvaluating(false);
@@ -68,40 +122,64 @@ export default function InterviewPage() {
   }
 
   return (
-    <section className="max-w-3xl">
-      <h2 className="text-2xl font-bold mb-4">AI Mock Interview</h2>
+    <section className="max-w-3xl mx-auto">
+      <h2 className="text-2xl font-bold mb-6">AI Mock Interview</h2>
 
-      {/* ROLE SELECTION */}
+      {/* ROLE + DIFFICULTY */}
       {!question && (
         <div className="space-y-4">
-          <label className="block text-sm text-slate-400">
-            Select role
-          </label>
+          <label className="text-sm text-slate-400">Select role</label>
 
           <select
             value={role}
-            onChange={(e) => setRole(e.target.value)}
-            className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10"
+            onChange={(e) => setRole(e.target.value as Role)}
+            className="w-full px-4 py-3 rounded-lg bg-white/5 text-white border border-white/10"
           >
-            <option value="frontend">Frontend</option>
-            <option value="backend">Backend</option>
-            <option value="fullstack">Full Stack</option>
+            {ROLES.map((r) => (
+              <option
+                key={r.value}
+                value={r.value}
+                className="bg-slate-900 text-white"
+              >
+                {r.label}
+              </option>
+            ))}
+          </select>
+
+          <label className="text-sm text-slate-400">Difficulty</label>
+          <select
+            value={difficulty}
+            onChange={(e) => setDifficulty(e.target.value as Difficulty)}
+            className="w-full px-4 py-3 rounded-lg bg-white/5 text-white border border-white/10"
+          >
+            <option className="bg-slate-900" value="easy">
+              Easy
+            </option>
+            <option className="bg-slate-900" value="medium">
+              Medium
+            </option>
+            <option className="bg-slate-900" value="hard">
+              Hard
+            </option>
           </select>
 
           <button
             onClick={startInterview}
             disabled={loading}
-            className="mt-4 px-6 py-3 rounded-lg bg-gradient-to-r from-cyan-400 to-indigo-500 text-black font-semibold disabled:opacity-60"
+            className="px-6 py-3 rounded-lg bg-gradient-to-r from-cyan-400 to-indigo-500 text-black font-semibold"
           >
             {loading ? "Starting..." : "Start Interview"}
           </button>
         </div>
       )}
 
-      {/* QUESTION + ANSWER */}
+      {/* QUESTION */}
       {question && (
         <div className="mt-8 space-y-4">
-          <p className="font-semibold">Question</p>
+          <div className="flex justify-between text-sm text-slate-400">
+            <span>Question {questionNo}</span>
+            <span>⏱ {timeLeft}s</span>
+          </div>
 
           <div className="rounded-lg border border-white/10 bg-white/5 p-4">
             {question}
@@ -110,15 +188,15 @@ export default function InterviewPage() {
           <textarea
             value={answer}
             onChange={(e) => setAnswer(e.target.value)}
+            rows={6}
             placeholder="Type your answer here..."
-            rows={5}
-            className="w-full mt-4 px-4 py-3 rounded-lg bg-white/5 border border-white/10"
+            className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10"
           />
 
           <button
             onClick={submitAnswer}
             disabled={evaluating || !answer.trim()}
-            className="mt-4 px-6 py-3 rounded-lg bg-indigo-500 text-black font-semibold disabled:opacity-60"
+            className="px-6 py-3 rounded-lg bg-indigo-500 text-black font-semibold"
           >
             {evaluating ? "Evaluating..." : "Submit Answer"}
           </button>
@@ -138,12 +216,21 @@ export default function InterviewPage() {
             title="Improvements"
             items={feedback.improvements}
           />
+
+          <button
+            onClick={startInterview}
+            disabled={loading}
+            className="mt-6 px-6 py-3 rounded-lg bg-cyan-500 text-black font-semibold"
+          >
+            {loading ? "Loading..." : "Next Question"}
+          </button>
         </div>
       )}
     </section>
   );
 }
 
+/* ---------------- FEEDBACK UI ---------------- */
 function FeedbackSection({
   title,
   items,

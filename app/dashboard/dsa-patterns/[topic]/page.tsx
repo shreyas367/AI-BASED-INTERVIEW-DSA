@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { dsaProblems } from "@/lib/dsaPatterns";
+import { getLeetCodeUrl } from "@/lib/leetcode";
 import { useParams } from "next/navigation";
 
 type Difficulty = "Easy" | "Medium" | "Hard";
@@ -75,7 +76,19 @@ export default function DSAPatternPage() {
                 </span>
               </div>
 
-              <DifficultyBadge difficulty={problem.difficulty} />
+              {/* RIGHT SIDE: Difficulty + LeetCode link */}
+              <div className="flex items-center gap-3">
+                <DifficultyBadge difficulty={problem.difficulty} />
+
+                <a
+                  href={getLeetCodeUrl(problem.name)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-indigo-400 hover:text-indigo-300 underline"
+                >
+                  LeetCode →
+                </a>
+              </div>
             </div>
           );
         })}
@@ -92,7 +105,9 @@ function DifficultyBadge({ difficulty }: { difficulty: Difficulty }) {
   };
 
   return (
-    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${colors[difficulty]}`}>
+    <span
+      className={`px-3 py-1 rounded-full text-xs font-semibold ${colors[difficulty]}`}
+    >
       {difficulty}
     </span>
   );
