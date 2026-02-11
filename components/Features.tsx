@@ -1,5 +1,5 @@
 import FeatureCard from "@/components/FeatureCard";
-import { Brain, Zap, TrendingUp } from "lucide-react";
+import { Brain, Zap, TrendingUp,Binary } from "lucide-react";
 
 export default function Features() {
   return (
@@ -19,6 +19,11 @@ export default function Features() {
           icon={TrendingUp}
           title="Progress Analytics"
           description="Track improvement and identify weak areas to focus on."
+        />
+        <FeatureCard
+          icon={Binary}
+          title="DSA Pattern Mastery"
+          description="Practice top interview patterns like Sliding Window and Two Pointers."
         />
       </div>
     </section>

@@ -13,6 +13,9 @@ export const dsaProblems: Record<
     { name: "Set Matrix Zeroes", difficulty: "Medium" },
     { name: "Next Permutation", difficulty: "Medium" },
     { name: "Trapping Rain Water", difficulty: "Hard" },
+    // Added
+    { name: "3Sum", difficulty: "Medium" },
+    { name: "Container With Most Water", difficulty: "Medium" },
   ],
 
   string: [
@@ -26,6 +29,9 @@ export const dsaProblems: Record<
     { name: "Implement strstr()", difficulty: "Easy" },
     { name: "Palindrome Check", difficulty: "Easy" },
     { name: "Z Algorithm / KMP", difficulty: "Hard" },
+    // Added
+    { name: "Longest Common Prefix", difficulty: "Easy" },
+    { name: "Encode and Decode Strings", difficulty: "Medium" },
   ],
 
   "linked-list": [
@@ -39,6 +45,9 @@ export const dsaProblems: Record<
     { name: "Reverse Nodes in K-Group", difficulty: "Hard" },
     { name: "Copy List with Random Pointer", difficulty: "Hard" },
     { name: "Flatten Multilevel Linked List", difficulty: "Medium" },
+    // Added
+    { name: "Add Two Numbers", difficulty: "Medium" },
+    { name: "Reorder List", difficulty: "Medium" },
   ],
 
   stack: [
@@ -52,6 +61,9 @@ export const dsaProblems: Record<
     { name: "Asteroid Collision", difficulty: "Medium" },
     { name: "Remove K Digits", difficulty: "Medium" },
     { name: "Stock Span Problem", difficulty: "Medium" },
+    // Added
+    { name: "Decode String", difficulty: "Medium" },
+    { name: "Simplify Path", difficulty: "Medium" },
   ],
 
   queue: [
@@ -65,6 +77,9 @@ export const dsaProblems: Record<
     { name: "Interleave Queue", difficulty: "Medium" },
     { name: "Task Scheduler", difficulty: "Medium" },
     { name: "Design Hit Counter", difficulty: "Medium" },
+    // Added
+    { name: "Gas Station", difficulty: "Medium" },
+    { name: "Number of Recent Calls", difficulty: "Easy" },
   ],
 
   heap: [
@@ -78,6 +93,9 @@ export const dsaProblems: Record<
     { name: "Minimum Cost of Ropes", difficulty: "Easy" },
     { name: "Heap Sort", difficulty: "Medium" },
     { name: "Smallest Range Covering K Lists", difficulty: "Hard" },
+    // Added
+    { name: "Last Stone Weight", difficulty: "Easy" },
+    { name: "Design Twitter", difficulty: "Medium" },
   ],
 
   "binary-search": [
@@ -91,6 +109,9 @@ export const dsaProblems: Record<
     { name: "Allocate Books", difficulty: "Medium" },
     { name: "Aggressive Cows", difficulty: "Hard" },
     { name: "Capacity to Ship Packages", difficulty: "Medium" },
+    // Added
+    { name: "Search a 2D Matrix", difficulty: "Medium" },
+    { name: "Find Minimum in Rotated Sorted Array", difficulty: "Medium" },
   ],
 
   "binary-tree": [
@@ -104,6 +125,9 @@ export const dsaProblems: Record<
     { name: "Boundary Traversal", difficulty: "Medium" },
     { name: "Serialize & Deserialize Tree", difficulty: "Hard" },
     { name: "Binary Tree Maximum Path Sum", difficulty: "Hard" },
+    // Added
+    { name: "Symmetric Tree", difficulty: "Easy" },
+    { name: "Path Sum", difficulty: "Easy" },
   ],
 
   bst: [
@@ -117,6 +141,9 @@ export const dsaProblems: Record<
     { name: "Recover BST", difficulty: "Hard" },
     { name: "BST Iterator", difficulty: "Medium" },
     { name: "Two Sum in BST", difficulty: "Easy" },
+    // Added
+    { name: "Convert Sorted List to Binary Search Tree", difficulty: "Medium" },
+    { name: "Trim a Binary Search Tree", difficulty: "Medium" },
   ],
 
   graph: [
@@ -130,6 +157,9 @@ export const dsaProblems: Record<
     { name: "Bellman Ford", difficulty: "Medium" },
     { name: "Minimum Spanning Tree", difficulty: "Hard" },
     { name: "Word Ladder", difficulty: "Hard" },
+    // Added
+    { name: "Clone Graph", difficulty: "Medium" },
+    { name: "Pacific Atlantic Water Flow", difficulty: "Medium" },
   ],
 
   dp: [
@@ -143,7 +173,40 @@ export const dsaProblems: Record<
     { name: "Unique Paths", difficulty: "Medium" },
     { name: "Minimum Path Sum", difficulty: "Medium" },
     { name: "DP on Trees", difficulty: "Hard" },
+    // Added
+    { name: "House Robber", difficulty: "Medium" },
+    { name: "Coin Change", difficulty: "Medium" },
   ],
-   hashing: [    { name: "Two Sum", difficulty: "Easy" },    { name: "Contains Duplicate", difficulty: "Easy" },    { name: "Valid Anagram", difficulty: "Easy" },    { name: "Group Anagrams", difficulty: "Medium" },    { name: "Top K Frequent Elements", difficulty: "Medium" },    { name: "Longest Consecutive Sequence", difficulty: "Medium" },    { name: "Subarray Sum Equals K", difficulty: "Medium" },    { name: "4Sum II", difficulty: "Medium" },    { name: "First Missing Positive", difficulty: "Hard" },    { name: "Minimum Window Substring", difficulty: "Hard" },  ], 
-    "sliding-window": [    { name: "Maximum Sum Subarray of Size K", difficulty: "Easy" },    { name: "Longest Substring Without Repeating Characters", difficulty: "Medium" },    { name: "Longest Substring with K Distinct Characters", difficulty: "Medium" },    { name: "Fruit Into Baskets", difficulty: "Medium" },    { name: "Minimum Size Subarray Sum", difficulty: "Medium" },    { name: "Permutation in String", difficulty: "Medium" },    { name: "Find All Anagrams in String", difficulty: "Medium" },    { name: "Sliding Window Maximum", difficulty: "Hard" },    { name: "Minimum Window Substring", difficulty: "Hard" },    { name: "Substring with Concatenation of All Words", difficulty: "Hard" },  ],
+
+  hashing: [
+    { name: "Two Sum", difficulty: "Easy" },
+    { name: "Contains Duplicate", difficulty: "Easy" },
+    { name: "Valid Anagram", difficulty: "Easy" },
+    { name: "Group Anagrams", difficulty: "Medium" },
+    { name: "Top K Frequent Elements", difficulty: "Medium" },
+    { name: "Longest Consecutive Sequence", difficulty: "Medium" },
+    { name: "Subarray Sum Equals K", difficulty: "Medium" },
+    { name: "4Sum II", difficulty: "Medium" },
+    { name: "First Missing Positive", difficulty: "Hard" },
+    { name: "Minimum Window Substring", difficulty: "Hard" },
+    // Added
+    { name: "Isomorphic Strings", difficulty: "Easy" },
+    { name: "Word Pattern", difficulty: "Easy" },
+  ],
+
+  "sliding-window": [
+    { name: "Maximum Sum Subarray of Size K", difficulty: "Easy" },
+    { name: "Longest Substring Without Repeating Characters", difficulty: "Medium" },
+    { name: "Longest Substring with K Distinct Characters", difficulty: "Medium" },
+    { name: "Fruit Into Baskets", difficulty: "Medium" },
+    { name: "Minimum Size Subarray Sum", difficulty: "Medium" },
+    { name: "Permutation in String", difficulty: "Medium" },
+    { name: "Find All Anagrams in String", difficulty: "Medium" },
+    { name: "Sliding Window Maximum", difficulty: "Hard" },
+    { name: "Minimum Window Substring", difficulty: "Hard" },
+    { name: "Substring with Concatenation of All Words", difficulty: "Hard" },
+    // Added
+    { name: "Longest Repeating Character Replacement", difficulty: "Medium" },
+    { name: "Max Consecutive Ones III", difficulty: "Medium" },
+  ],
 };
