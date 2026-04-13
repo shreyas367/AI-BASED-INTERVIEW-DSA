@@ -1,19 +1,19 @@
 import OpenAI from "openai";
 
 const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  // Ensure you add GROQ_API_KEY to your .env or Vercel settings
+  apiKey: process.env.GROQ_API_KEY,
+  baseURL: "https://api.groq.com/openai/v1",
 });
-
-
 
 export async function generateInterviewQuestion(role: string) {
   const response = await client.chat.completions.create({
-    model: "gpt-4o-mini", // stable + cheap + fast
+    // Using Llama 3.3 70B for high-quality technical questions
+    model: "llama-3.3-70b-versatile", 
     messages: [
       {
         role: "system",
-        content:
-          "You are a senior technical interviewer. Ask one medium-difficulty interview question.",
+        content: "You are a senior technical interviewer. Ask one medium-difficulty interview question.",
       },
       {
         role: "user",
@@ -25,7 +25,6 @@ export async function generateInterviewQuestion(role: string) {
 
   return response.choices[0].message.content?.trim() || "";
 }
-
 
 type EvaluationResult = {
   score: number;
@@ -40,7 +39,7 @@ export async function evaluateAnswer(
   role: string
 ): Promise<EvaluationResult> {
   const response = await client.chat.completions.create({
-    model: "gpt-4o-mini",
+    model: "llama-3.3-70b-versatile",
     messages: [
       {
         role: "system",
@@ -48,18 +47,14 @@ export async function evaluateAnswer(
 You are a senior technical interviewer.
 Evaluate answers strictly and fairly.
 You MUST return valid JSON only.
-Do NOT include explanations outside JSON.
+Do NOT include explanations or markdown backticks.
         `.trim(),
       },
       {
         role: "user",
         content: `
-Question:
-${question}
-
-Candidate Answer:
-${answer}
-
+Question: ${question}
+Candidate Answer: ${answer}
 Role: ${role}
 
 Return JSON in EXACT format:
@@ -72,8 +67,10 @@ Return JSON in EXACT format:
         `.trim(),
       },
     ],
-    temperature: 0.2, // 🔒 consistent scoring
-    max_tokens: 300,
+    temperature: 0.2,
+    max_tokens: 500,
+    // Groq supports JSON mode to prevent parsing errors
+    response_format: { type: "json_object" },
   });
 
   const content = response.choices[0]?.message?.content;
@@ -84,6 +81,3 @@ Return JSON in EXACT format:
 
   return JSON.parse(content);
 }
-
-
-
